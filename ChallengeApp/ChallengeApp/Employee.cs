@@ -1,8 +1,9 @@
 ﻿namespace ChallengeApp
 {
-    internal class Employee
+     public class Employee
     {
         private List<int> points = new List<int>();
+        private string v;
 
         public string name { get; private set; }
         public string surname { get; private set; }
@@ -22,10 +23,14 @@
             this.age = age;
         }
 
+        public Employee(string v)
+        {
+            this.v = v;
+        }
+
         public void AddPoints(int point)
         {
             points.Add(point);
         }
-
     }
 }

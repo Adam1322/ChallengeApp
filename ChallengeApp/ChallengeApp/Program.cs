@@ -1,6 +1,6 @@
 ﻿using ChallengeApp;
 
-Employee employee0 = new Employee("Adam", "Kowalski", "30" );
+Employee employee0 = new Employee("Adam", "Kowalski", "30");
 Employee employee1 = new Employee("Mariusz", "Szewczyk", "25");
 Employee employee2 = new Employee("Damian", "Krawczyk", "27");
 
