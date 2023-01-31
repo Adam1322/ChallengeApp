@@ -3,7 +3,7 @@ using ChallengeApp;
 
 namespace ChalllengeApp.Tests
 {
-    public class Test
+    public class EmployeeTests
     {
         [Test]
         public void WhenAddedPoints_ShouldResult()
