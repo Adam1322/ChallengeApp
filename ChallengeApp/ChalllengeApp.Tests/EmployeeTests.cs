@@ -13,7 +13,7 @@ namespace ChalllengeApp.Tests
             employee.AddGrade(2);
             employee.AddGrade(6);
             //act
-            var statistics = employee.GetStatistics();
+            var statistics = employee.GetStatisticsWithForEach();
             //assert
             Assert.AreEqual(2, statistics.Min);
             Assert.AreEqual(6, statistics.Max);
