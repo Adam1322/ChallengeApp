@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography;
-
-namespace ChallengeApp
+﻿namespace ChallengeApp
 {
     public class Employee
     {
@@ -24,7 +22,7 @@ namespace ChallengeApp
             }
             else
             {
-                Console.WriteLine("invalid grade value");
+                throw new Exception("invalid grade value");
             }
         }
         public void AddGrade(double grade)
@@ -45,7 +43,7 @@ namespace ChallengeApp
             }
             else
             {
-                Console.WriteLine("String in not float");
+                throw new Exception("String in not float");
             }
         }
         public void AddGrade(char grade)
@@ -73,8 +71,7 @@ namespace ChallengeApp
                     this.grades.Add(20);
                     break;
                 default:
-                    Console.WriteLine("Wrong Letter");
-                    break;
+                    throw new Exception("Wrong Letter");
             }
         }
         

@@ -24,7 +24,15 @@ while (true)
     {
         break;
     }
-    employee.AddGrade(input);
+
+    try
+    {
+        employee.AddGrade(input);
+    }
+    catch(Exception)
+    {
+        Console.WriteLine($"Exception catched: {e.Message}");
+    }
 }
 var statistics = employee.GetStatistics();
 Console.WriteLine();
