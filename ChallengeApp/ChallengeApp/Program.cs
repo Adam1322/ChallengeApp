@@ -8,56 +8,60 @@ Console.WriteLine("Podaj oceny pracownika i kierownika. Żeby zakończyć proces
 Console.WriteLine(" ");
 
 var employee = new EmployeeInFile("Adam", "Kuliczkowski", "23");
-employee.AddGrade(0.5f);
-employee.AddGrade(13);
-employee.AddGrade(1);
-//var supervisor = new Supervisor("Tomasz", "Bąk", "50");
-//var employee = new Employee("Adam", "Kuliczkowski", "23");
+employee.GradeAdded += EmployeeGradeAdded;
+var supervisor = new Supervisor("Tomasz", "Bąk", "50");
+supervisor.GradeAdded += EmployeeGradeAdded;
 
-//while (true)
-//{
-//    Console.WriteLine("Podaj kolejną ocenę pracownika");
-//    var input = Console.ReadLine();
-//    if(input == "q")
-//    {
-//        break;
-//    }
+void EmployeeGradeAdded(object sender, EventArgs args)
+{
+    Console.WriteLine("Dodano nową ocenę");
+}
 
-//    try
-//    {
-//        employee.AddGrade(input);
-//    }
-//    catch(Exception exception)
-//    {
-//       Console.WriteLine($"Exception catched: {exception.Message}");
-//    }
-//}
-//while (true)
-//{
-//    Console.WriteLine("Podaj kolejną ocenę kierownika");
-//    var input = Console.ReadLine();
-//    if (input == "q")
-//    {
-//        break;
-//    }
-//    try { supervisor.AddGrade(input); }
-//    catch (Exception exception) { Console.WriteLine($"Exception catched:{exception.Message}"); }
-//}
-//var StatisticsEmployee = employee.GetStatistics();
-//var StatisticsSupervior = supervisor.GetStatistics();
 
-//Console.WriteLine();
-//Console.WriteLine($"Pracownik {employee.Name} {employee.Surname} wiek : {employee.Age} lat");
-//Console.WriteLine();
-//Console.WriteLine($"Ocena średnia: {StatisticsEmployee.Average:N2}");
-//Console.WriteLine($"Ocena minimalna: {StatisticsEmployee.Min}");
-//Console.WriteLine($"Ocena maksymalna: {StatisticsEmployee.Max}");
-//Console.WriteLine($"Ocena końcowa: {StatisticsEmployee.AverageLetter}");
+while (true)
+{
+    Console.WriteLine("Podaj kolejną ocenę pracownika");
+    var input = Console.ReadLine();
+    if(input == "q")
+    {
+        break;
+    }
 
-//Console.WriteLine();
-//Console.WriteLine($"Kierownik {supervisor.Name} {supervisor.Surname} wiek : {supervisor.Age} lat");
-//Console.WriteLine();
-//Console.WriteLine($"Ocena średnia: {StatisticsSupervior.Average:N2}");
-//Console.WriteLine($"Ocena minimalna: {StatisticsSupervior.Min}");
-//Console.WriteLine($"Ocena maksymalna: {StatisticsSupervior.Max}");
-//Console.WriteLine($"Ocena końcowa: {StatisticsSupervior.AverageLetter}");
+    try
+    {
+        employee.AddGrade(input);
+    }
+    catch(Exception exception)
+    {
+       Console.WriteLine($"Exception catched: {exception.Message}");
+    }
+}
+while (true)
+{
+    Console.WriteLine("Podaj kolejną ocenę kierownika");
+    var input = Console.ReadLine();
+    if (input == "q")
+    {
+        break;
+    }
+    try { supervisor.AddGrade(input); }
+    catch (Exception exception) { Console.WriteLine($"Exception catched:{exception.Message}"); }
+}
+var StatisticsEmployee = employee.GetStatistics();
+var StatisticsSupervior = supervisor.GetStatistics();
+
+Console.WriteLine();
+Console.WriteLine($"Pracownik {employee.Name} {employee.Surname} wiek : {employee.Age} lat");
+Console.WriteLine();
+Console.WriteLine($"Ocena średnia: {StatisticsEmployee.Average:N2}");
+Console.WriteLine($"Ocena minimalna: {StatisticsEmployee.Min}");
+Console.WriteLine($"Ocena maksymalna: {StatisticsEmployee.Max}");
+Console.WriteLine($"Ocena końcowa: {StatisticsEmployee.AverageLetter}");
+
+Console.WriteLine();
+Console.WriteLine($"Kierownik {supervisor.Name} {supervisor.Surname} wiek : {supervisor.Age} lat");
+Console.WriteLine();
+Console.WriteLine($"Ocena średnia: {StatisticsSupervior.Average:N2}");
+Console.WriteLine($"Ocena minimalna: {StatisticsSupervior.Min}");
+Console.WriteLine($"Ocena maksymalna: {StatisticsSupervior.Max}");
+Console.WriteLine($"Ocena końcowa: {StatisticsSupervior.AverageLetter}");

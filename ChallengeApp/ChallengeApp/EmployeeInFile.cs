@@ -3,90 +3,87 @@
     public class EmployeeInFile : EmployeeBase
     {
         private const string fileName = "grades.txt";
+
+        private List<float> grades = new List<float>();
+
         public EmployeeInFile(string name, string surname, string age) 
             : base(name, surname, age)
         {
         }
 
+        public delegate void GradeAddedDelegate(object sender, EventArgs args);
+
+        public event GradeAddedDelegate GradeAdded;
+
         public override void AddGrade(float grade)
         {
-            using (var writer = File.AppendText(fileName)) 
+            if (grade >= 0 && grade < 100)
             {
-                if (grade >= 0 && grade <= 100)
+                using (var writer = File.AppendText(fileName))
                 {
-                    writer.Write(grade);
+                    writer.WriteLine(grade);
                 }
-                else
+                if (GradeAdded != null)
                 {
-                    throw new Exception("Invalid grade value");
+                    GradeAdded(this, new EventArgs());
                 }
             }
+            else
+                throw new Exception("Invalid grade value");
         }
 
         public override void AddGrade(double grade)
         {
-            using (var writer = File.AppendText(fileName))
-            {
-                var valueInDouble = (float)grade;
-                writer.WriteLine(valueInDouble);
-            }
+            float gradeAsFloat = (float)grade;
+            this.AddGrade(gradeAsFloat);
         }
 
         public override void AddGrade(int grade)
         {
-            using (var writer = File.AppendText(fileName))
-            {
-                var valueInInt = (float)grade;
-                writer.WriteLine(valueInInt);
-            }
+            float gradeAsFloat = grade;
+            this.AddGrade(gradeAsFloat);
         }
 
         public override void AddGrade(char grade)
         {
-            using (var writer = File.AppendText(fileName))
+            switch (grade)
             {
-                switch (grade)
-                {
-                    case 'A':
-                        writer.WriteLine(100);
-                        break;
-                    case 'B':
-                        writer.WriteLine(80);
-                        break;
-                    case 'C':
-                        writer.WriteLine(60);
-                        break;
-                    case 'D':
-                        writer.WriteLine(40);
-                        break;
-                    case 'E':
-                        writer.WriteLine(20);
-                        break;
-                    case 'F':
-                        writer.WriteLine(0);
-                        break;
-                    default:
-                        throw new Exception("Wrong latter");
-                }
+                case 'A':
+                    this.grades.Add(100);
+                    break;
+                case 'B':
+                    this.grades.Add(80);
+                    break;
+                case 'C':
+                    this.grades.Add(60);
+                    break;
+                case 'D':
+                    this.grades.Add(40);
+                    break;
+                case 'E':
+                    this.grades.Add(20);
+                    break;
+                case 'F':
+                    this.grades.Add(0);
+                    break;
+                default:
+                    throw new Exception("Wrong latter");
             }
         }
 
         public override void AddGrade(string grade)
         {
-            using (var writer = File.AppendText(fileName))
+            if (float.TryParse(grade, out float result))
             {
-                if (float.TryParse(grade, out float result))
-                {
-                    writer.WriteLine(result);
-                }
-                else if (char.TryParse(grade, out char character))
-                {
-                    writer.WriteLine(character);
-                }
-                else
-                {
-                    throw new Exception("String is not a float");
-                }
+                this.AddGrade(result);
+            }
+            else if (char.TryParse(grade, out char character))
+            {
+                this.AddGrade(character);
+            }
+            else
+            {
+                throw new Exception("String is not a float");
             }
         }
 

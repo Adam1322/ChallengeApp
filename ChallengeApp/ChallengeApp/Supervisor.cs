@@ -2,6 +2,10 @@
 {
     public class Supervisor : IEmployee
     {
+        public delegate void GradeAddedDelegate(object sender, EventArgs args);
+
+        public event GradeAddedDelegate GradeAdded;
+
         private List<float> grades = new List<float>();
         public Supervisor(string name, string surname, string age)
         {
@@ -18,6 +22,10 @@
             if (grade >= 0 && grade <= 100)
             {
                 this.grades.Add(grade);
+            }
+            if (GradeAdded != null)
+            {
+                GradeAdded(this, new EventArgs());
             }
             else
             {
