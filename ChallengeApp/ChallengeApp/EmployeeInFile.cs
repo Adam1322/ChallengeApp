@@ -6,9 +6,10 @@
 
         private List<float> grades = new List<float>();
 
-        public EmployeeInFile(string name, string surname, string age) 
+        public EmployeeInFile(string name, string surname, string age)
             : base(name, surname, age)
         {
+            using (FileStream fs = File.Create(fileName)) ;
         }
 
         public delegate void GradeAddedDelegate(object sender, EventArgs args);
@@ -17,7 +18,7 @@
 
         public override void AddGrade(float grade)
         {
-            if (grade >= 0 && grade < 100)
+            if (grade >= 0 && grade <= 100)
             {
                 using (var writer = File.AppendText(fileName))
                 {
@@ -34,41 +35,42 @@
 
         public override void AddGrade(double grade)
         {
-            float gradeAsFloat = (float)grade;
-            this.AddGrade(gradeAsFloat);
+            float result = (float)grade;
+            this.AddGrade(result);
         }
 
         public override void AddGrade(int grade)
         {
-            float gradeAsFloat = grade;
-            this.AddGrade(gradeAsFloat);
+            float result = grade;
+            this.AddGrade(result);
         }
 
         public override void AddGrade(char grade)
         {
-            switch (grade)
-            {
-                case 'A':
-                    this.grades.Add(100);
-                    break;
-                case 'B':
-                    this.grades.Add(80);
-                    break;
-                case 'C':
-                    this.grades.Add(60);
-                    break;
-                case 'D':
-                    this.grades.Add(40);
-                    break;
-                case 'E':
-                    this.grades.Add(20);
-                    break;
-                case 'F':
-                    this.grades.Add(0);
-                    break;
-                default:
-                    throw new Exception("Wrong latter");
-            }
+            using (var reader = File.AppendText(fileName))
+                switch (grade)
+                {
+                    case 'A':
+                        this.AddGrade(100);
+                        break;
+                    case 'B':
+                        this.AddGrade(80);
+                        break;
+                    case 'C':
+                        this.AddGrade(60);
+                        break;
+                    case 'D':
+                        this.AddGrade(40);
+                        break;
+                    case 'E':
+                        this.AddGrade(20);
+                        break;
+                    case 'F':
+                        this.AddGrade(0);
+                        break;
+                    default:
+                        throw new Exception("Wrong latter");
+                }
         }
 
         public override void AddGrade(string grade)
@@ -89,13 +91,7 @@
 
         public override Statistics GetStatistics()
         {
-            var gradesFromFile = this.ReadGradesFromFile();
-            var statistics = this.CountStatistics(gradesFromFile);
-            return statistics;
-        }
-        private List<float> ReadGradesFromFile()
-        {
-            var grades = new List<float>();
+            var statistics = new Statistics();
             if (File.Exists(fileName))
             {
                 using (var reader = File.OpenText(fileName))
@@ -104,49 +100,14 @@
                     while (line != null)
                     {
                         var number = float.Parse(line);
-                        grades.Add(number);
+                        statistics.AddGrade(number);
                         line = reader.ReadLine();
                     }
                 }
             }
-            return grades;
-        }
-        private Statistics CountStatistics(List<float> grades)
-        {
-            var statistics = new Statistics();
-            statistics.Average = 0;
-            statistics.Min = float.MaxValue;
-            statistics.Max = float.MinValue;
-            foreach (var grade in grades)
+            foreach (var grade in this.grades)
             {
-                if (grade >= 0)
-                {
-                    statistics.Max = Math.Max(statistics.Max, grade);
-                    statistics.Min = Math.Min(statistics.Min, grade);
-                    statistics.Average += grade;
-                }
-            }
-            statistics.Average /= grades.Count;
-            switch (statistics.Average)
-            {
-                case var average when average >= 90:
-                    statistics.AverageLetter = 'A';
-                    break;
-                case var average when average >= 70 && average < 90:
-                    statistics.AverageLetter = 'B';
-                    break;
-                case var average when average >= 50 && average < 70:
-                    statistics.AverageLetter = 'C';
-                    break;
-                case var average when average >= 30 && average < 50:
-                    statistics.AverageLetter = 'D';
-                    break;
-                case var average when average >= 10 && average < 30:
-                    statistics.AverageLetter = 'E';
-                    break;
-                case var average when average < 10:
-                    statistics.AverageLetter = 'F';
-                    break;
+                statistics.AddGrade(grade);
             }
             return statistics;
         }

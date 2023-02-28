@@ -67,12 +67,29 @@
 
         public override void AddGrade(string grade)
         {
-            throw new NotImplementedException();
+            if (float.TryParse(grade, out float result))
+            {
+                this.AddGrade(result);
+            }
+            else if (char.TryParse(grade, out char character))
+            {
+                this.AddGrade(character);
+            }
+            else
+            {
+                throw new Exception("String is not a float");
+            }
         }
-
         public override Statistics GetStatistics()
         {
-            throw new NotImplementedException();
+            var statistics = new Statistics();
+            foreach (var grade in this.grades)
+            {
+                statistics.AddGrade(grade);
+            }
+            return statistics;
         }
+
+
     }
 }
